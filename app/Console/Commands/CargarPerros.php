@@ -5,21 +5,21 @@ namespace App\Console\Commands;
 use App\Repositories\PerroRepository;
 use Illuminate\Console\Command;
 
-class CargarPerro extends Command
+class CargarPerros extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'cargarPerro';
+    protected $signature = 'cargarPerros';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'comando para cargar perro en la bd';
+    protected $description = 'comando para cargar perros en la bd';
 
     /**
      * Execute the console command.
@@ -28,8 +28,8 @@ class CargarPerro extends Command
      */
     public function handle()
     {
-        return Command::SUCCESS;
-        $repo= new PerroRepository();
-        $repo->cargarPerro();
+        // return Command::SUCCESS;
+        $repo = new PerroRepository();
+        $repo->cargarPerros();
     }
 }

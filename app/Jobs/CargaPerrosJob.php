@@ -21,10 +21,8 @@ class CargaPerrosJob implements ShouldQueue
      */
     public int $id;
 
-    public function __construct($id)
+    public function __construct()
     {
-        //
-        //$this->id = $id;
     }
 
     /**
@@ -35,7 +33,7 @@ class CargaPerrosJob implements ShouldQueue
     public function handle()
     {
         //
-        //$repo = new PerroRepository();
-        //$repo->cargaPerro($this->id);
+        $repo = new PerroRepository();
+        $repo->perroRandom();
     }
 }

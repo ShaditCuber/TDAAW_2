@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Perro;
+use Database\Factories\PerroFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +22,15 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        \App\Models\Perro ::factory(10)->create();
+
+        // \App\Models\Perro::factory(10)->create();
+
+        try {
+            // Perro::factory()->count(1)->create();
+            Perro::factory(10)->create();
+        } catch (\Exception $e) {
+            // Manejar el error
+            dd($e->getMessage());
+        }
     }
 }

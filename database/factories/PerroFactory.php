@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Perro;
+use App\Services\PerroService;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -15,13 +17,23 @@ class PerroFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Perro::class;
+
     public function definition()
     {
+        //$perroService = app(PerroService::class);
+        //$imageData = $perroService->singleRandomImageFromAllDogsCollection();
+        // $imageData = $this->perroService->singleRandomImageFromAllDogsCollection();
+        //$imageUrl = $imageData['message']; //url
+        //$imageUrl = isset($imageData['body']) ? $imageData['body'] : null;
+        $perroService = new PerroService();
+        $data = $perroService->singleRandomImageFromAllDogsCollection();
+        $imageUrl = $data['body']['message'];
         return [
-            'nombre' => fake()->unique()->regexify('[A-Za-z]{6}'),
-            // 'url_foto' => api de perro,
-            'descripcion' => fake()->sentence(),
-            
+            'nombre' => ucfirst(fake()->unique()->regexify('[A-Za-z]{6}')),
+            'url_foto' => $imageUrl,
+            'descripcion' => ucfirst(fake()->sentence()),
+
         ];
     }
 }

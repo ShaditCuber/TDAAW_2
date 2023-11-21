@@ -18,6 +18,8 @@ class PerroRepository
 
             $perro = new Perro();
             $perro->nombre = $request->nombre;
+            $perro->url_foto = $request->url_foto;
+            $perro->descripcion = $request->descripcion;
             $perro->save();
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
@@ -35,6 +37,8 @@ class PerroRepository
         try {
             $perro = Perro::find($request->id);
             $perro->nombre = $request->nombre;
+            $perro->url_foto = $request->url_foto;
+            $perro->descripcion = $request->descripcion;
             $perro->save();
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
@@ -54,19 +58,19 @@ class PerroRepository
         }
     }
 
-    public function listarPerro($request)
+    public function listarPerros($request)
     {
         try {
 
-           if(isset($request->limit)){
-            $perro = Perro::with([])
-           ->orderBy()
-           ->take($request->limit)
-           ->get();
-           }else{
-            $perro = Perro::with([])
-           ->orderBy()
-           ->get();
+            if (isset($request->limit)) {
+                $perro = Perro::with([])
+                    ->orderBy()
+                    ->take($request->limit)
+                    ->get();
+            } else {
+                $perro = Perro::with([])
+                    ->orderBy()
+                    ->get();
             }
 
             return response()->json(["perro" => $perro], Response::HTTP_OK);
@@ -111,13 +115,14 @@ class PerroRepository
         }
     }
 
-    public function cargarPerro()
+    public function cargarPerros()
     {
         try {
             for ($i = 1; $i <= 9; $i++) {
-
-             CargaPerrosJob::dispatch($i);
+                //$this->perroRandom;
+                CargaPerrosJob::dispatch();
             }
+            //CargaPerrosJob::dispatch();
 
             return response()->json(["ok"], Response::HTTP_OK);
         } catch (Exception $e) {
@@ -139,25 +144,30 @@ class PerroRepository
 
 
 
-    public function random(){
+    public function perroRandom()
+    {
         try {
-           $perro= Perro::(); // corregir para random
-             return response()->json(["perro"=> $perro], Response::HTTP_OK);
-         } catch (Exception $e) {
-             Log::info([
-                 "error" => $e->getMessage(),
-                 "linea" => $e->getLine(),
-                 "file" => $e->getFile(),
-                 "metodo" => __METHOD__
-             ]);
+            $perroService = new PerroService;
+            $perroData = $perroService->singleRandomImageFromAllDogsCollection();
+            $imageUrl = $perroData['body']['message'];
+            $perro = new Perro;
+            $perro->url_foto = $imageUrl;
+            $perro->save();
+            return response()->json(["perro" => $perro], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
 
-             return response()->json([
-                 "error" => $e->getMessage(),
-                 "linea" => $e->getLine(),
-                 "file" => $e->getFile(),
-                 "metodo" => __METHOD__
-             ], Response::HTTP_BAD_REQUEST);
-         }
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
-
 }
