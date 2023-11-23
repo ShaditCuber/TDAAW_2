@@ -41,13 +41,13 @@ class PerroController extends Controller
         return $this->perroRepository->cargarPerros();
     }
 
-    public function perroRandom()
+    public function perroRandom(Request $request)
     {
-        return $this->perroRepository->perroRandom();
+        return $this->perroRepository->random($request);
     }
 
-    // public function registrarInteracción(Request $request)
-    // {
-    //     return $this->perroRepository->registrarInteraccion($request);
-    // }
+    public function perrosCandidatos(Request $request)
+    {
+        return $this->perroRepository->perrosCandidatos($request);
+    }
 }

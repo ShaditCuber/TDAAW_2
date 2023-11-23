@@ -14,10 +14,10 @@ class PerroRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return false;
-    }
+    // public function authorize()
+    // {
+    //     return false;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -30,10 +30,10 @@ class PerroRequest extends FormRequest
             //
             "id" => "nullable|exists:perro,id",
             "nombre" => "required|unique:perro|string",
-            "interaccion" => "required|exists:interaccion,interaccion_nombre"
+
         ];
     }
-    
+
     public function messages()
     {
         return [

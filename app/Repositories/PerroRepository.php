@@ -144,15 +144,34 @@ class PerroRepository
 
 
 
-    public function perroRandom()
+    public function random($request)
     {
         try {
-            $perroService = new PerroService;
-            $perroData = $perroService->singleRandomImageFromAllDogsCollection();
-            $imageUrl = $perroData['body']['message'];
-            $perro = new Perro;
-            $perro->url_foto = $imageUrl;
-            $perro->save();
+            Log::info(["request" => $request->user()]);
+            $perro = Perro::with(['id', 'nombre'])->inRandomOrder()->first();
+            return response()->json(["perro" => $perro], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function perrosCandidatos($request)
+    {
+        try {
+            Log::info(["request" => $request->user()]);
+            $perro = Perro::with(['id', 'nombre'])->inRandomOrder()->first();
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([

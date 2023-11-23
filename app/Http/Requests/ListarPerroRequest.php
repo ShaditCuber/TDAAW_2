@@ -6,6 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
+
 class ListarPerroRequest extends FormRequest
 {
     /**
@@ -13,10 +14,10 @@ class ListarPerroRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
-    {
-        return false;
-    }
+    // public function authorize()
+    // {
+    //     return false;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
@@ -27,7 +28,7 @@ class ListarPerroRequest extends FormRequest
     {
         return [
             //
-            "id"=>"required|exists:perro,id",
+            "id" => "required|exists:perro,id",
         ];
     }
 
@@ -43,7 +44,8 @@ class ListarPerroRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException(response()->json($validator->errors()->all(), Response::HTTP_BAD_REQUEST)
-    );
+        throw new HttpResponseException(
+            response()->json($validator->errors()->all(), Response::HTTP_BAD_REQUEST)
+        );
     }
 }
