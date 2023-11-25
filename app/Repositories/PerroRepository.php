@@ -208,11 +208,16 @@ class PerroRepository
             $idsInteraccion = Interaccion::where('perro_interesado_id', $request->id)
                                         ->pluck('perro_candidato_id');
 
-            $candidatos = Perro::where('id', '!=', $request->id)
+            $candidato = Perro::where('id', '!=', $request->id)
                             ->whereNotIn('id', $idsInteraccion)
-                            ->get(['id', 'nombre']);
+                            ->first(['id', 'nombre']);
 
-            return response()->json(["candidatos" => $candidatos], Response::HTTP_OK);
+            if ($candidato) {
+                return response()->json(["candidato" => $candidato], Response::HTTP_OK);
+            } else {
+                return response()->json(["mensaje" => "No hay más candidatos disponibles"], Response::HTTP_OK);
+            }
+
         } catch (Exception $e) {
             Log::info([
                 "error" => $e->getMessage(),
