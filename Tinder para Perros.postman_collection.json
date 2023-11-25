@@ -1,0 +1,365 @@
+{
+	"info": {
+		"_postman_id": "97fb1264-b76b-4d1e-bfac-51f15c5ff450",
+		"name": "Tinder para Perros",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24821090"
+	},
+	"item": [
+		{
+			"name": "Tinder",
+			"item": [
+				{
+					"name": "Random",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/random",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"random"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Candidatos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/candidatos",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"candidatos"
+							],
+							"query": [
+								{
+									"key": "perro_interesado_id",
+									"value": "d9634525-f4d7-403f-b3f4-86056824296e",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListarTodosXLimite",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/listar",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar-ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/listar?id=d9634525-f4d7-403f-b3f4-86056824296e",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Interaccion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/interaccion?perro_interesado_id=020efd00-abbc-441e-8cbe-d9458e3a77c3&perro_candidato_id=d9634525-f4d7-403f-b3f4-86056824296e&preferencia=aceptado",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"interaccion"
+							],
+							"query": [
+								{
+									"key": "perro_interesado_id",
+									"value": "020efd00-abbc-441e-8cbe-d9458e3a77c3"
+								},
+								{
+									"key": "perro_candidato_id",
+									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+								},
+								{
+									"key": "preferencia",
+									"value": "aceptado"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Aceptados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/aceptados?id=d9634525-f4d7-403f-b3f4-86056824296e",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"aceptados"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rechazados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/tinder/rechazados?id=d9634525-f4d7-403f-b3f4-86056824296e",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tinder",
+								"rechazados"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Perros",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/perro/registrar?nombre=prueba&url_foto=https://hips.hearstapps.com/hmg-prod/images/gettyimages-1422023439-64f1eaf518ace.jpg?crop=1xw:0.84375xh;center,top%26resize=1200:*&descripcion=prueba&=",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"perro",
+								"registrar"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "prueba"
+								},
+								{
+									"key": "url_foto",
+									"value": "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1422023439-64f1eaf518ace.jpg?crop=1xw:0.84375xh;center,top%26resize=1200:*"
+								},
+								{
+									"key": "descripcion",
+									"value": "prueba"
+								},
+								{
+									"key": "",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Read",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/perro/listar",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"perro",
+								"listar"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "161fc469-2dcf-481d-9a3f-b8b22774b96c",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "nombre",
+									"value": "prueba",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/perro/actualizar?id=e9349c7e-7fc6-449b-82ef-21c615f2402f&nombre=Noah",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"perro",
+								"actualizar"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "e9349c7e-7fc6-449b-82ef-21c615f2402f"
+								},
+								{
+									"key": "nombre",
+									"value": "Noah"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/perro/eliminar?id=3f6d689d-6981-4bcf-b0a4-d2e627a4c1cf",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"perro",
+								"eliminar"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3f6d689d-6981-4bcf-b0a4-d2e627a4c1cf"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/perro/restaurar?id=3f6d689d-6981-4bcf-b0a4-d2e627a4c1cf",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"perro",
+								"restaurar"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "3f6d689d-6981-4bcf-b0a4-d2e627a4c1cf"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "localhost:8000/api"
+		}
+	]
+}
