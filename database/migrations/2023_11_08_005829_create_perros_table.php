@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('perros', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('nombre');
+            $table->string('nombre')->nullable();
             $table->string('url_foto')->nullable();
             $table->text('descripcion')->nullable();
             $table->softDeletes();
@@ -31,5 +31,5 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('perros');
-    }   
+    }
 };
