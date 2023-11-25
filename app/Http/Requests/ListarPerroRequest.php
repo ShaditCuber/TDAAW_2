@@ -28,7 +28,8 @@ class ListarPerroRequest extends FormRequest
     {
         return [
             //
-            "id" => "required|exists:perro,id",
+            "id" => "exists:perros,id",
+            "limit"=>"integer",
         ];
     }
 

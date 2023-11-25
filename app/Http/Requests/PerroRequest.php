@@ -28,28 +28,32 @@ class PerroRequest extends FormRequest
     {
         return [
             //
-            "id" => "nullable|exists:perro,id",
-            "nombre" => "required|unique:perro|string",
-
+            "id" => "required|exists:perros,id",
+            "nombre" => "unique:perros|string",
         ];
     }
 
     public function messages()
     {
+        // return [
+        //     'required' => 'El campo :attribute es requerido',
+        //     'integer' => 'El campo :attribute debe ser un número entero',
+        //     'numeric' => 'El campo :attribute debe ser un número',
+        //     'exists' => 'El :attribute debe existir en nuestro sistema',
+        //     'boolean' => 'El campo :attribute debe ser un valor tipo boolean',
+        //     'required_unless' => 'El campo :attribute es requerido condicionalmente',
+        //     'required_with_all' => 'El campo :attribute es requerido condicionalmente',
+        //     'required_with' => 'El campo :attribute es requerido condicionalmente',
+        //     'required_if' => 'El campo :attribute es requerido condicionalmente',
+        //     'string' => 'El campo : attribute debe ser de tipo string',
+        //     'unique' => 'El campo :attribute debe ser único en nuestro sistema',
+        //     'max' => 'El campo :attribute supera el largo máximo permitido',
+        //     'array' => 'El campo :attribute debe ser de tipo array'
+        // ];
         return [
-            'required' => 'El campo :attribute es requerido',
-            'integer' => 'El campo :attribute debe ser un número entero',
-            'numeric' => 'El campo :attribute debe ser un número',
-            'exists' => 'El :attribute debe existir en nuestro sistema',
-            'boolean' => 'El campo :attribute debe ser un valor tipo boolean',
-            'required_unless' => 'El campo :attribute es requerido condicionalmente',
-            'required_with_all' => 'El campo :attribute es requerido condicionalmente',
-            'required_with' => 'El campo :attribute es requerido condicionalmente',
-            'required_if' => 'El campo :attribute es requerido condicionalmente',
-            'string' => 'El campo : attribute debe ser de tipo string',
-            'unique' => 'El campo :attribute debe ser único en nuestro sistema',
-            'max' => 'El campo :attribute supera el largo máximo permitido',
-            'array' => 'El campo :attribute debe ser de tipo array'
+            'id.required' => 'El ID del perro es obligatorio.',
+            'nombre.required' => 'El nombre del perro es obligatorio.',
+            'nombre.max' => 'El nombre del perro no puede superar los 50 caracteres.',
         ];
     }
 

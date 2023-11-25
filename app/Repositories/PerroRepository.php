@@ -11,7 +11,9 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class PerroRepository
-{
+{   
+
+    // Create Perro
     public function registrarPerro($request)
     {
         try {
@@ -32,44 +34,21 @@ class PerroRepository
         }
     }
 
-    public function actualizarPerro($request)
-    {
-        try {
-            $perro = Perro::find($request->id);
-            $perro->nombre = $request->nombre;
-            $perro->url_foto = $request->url_foto;
-            $perro->descripcion = $request->descripcion;
-            $perro->save();
-            return response()->json(["perro" => $perro], Response::HTTP_OK);
-        } catch (Exception $e) {
-            Log::info([
-                "error" => $e->getMessage(),
-                "linea" => $e->getLine(),
-                "file" => $e->getFile(),
-                "metodo" => __METHOD__
-            ]);
-
-            return response()->json([
-                "error" => $e->getMessage(),
-                "linea" => $e->getLine(),
-                "file" => $e->getFile(),
-                "metodo" => __METHOD__
-            ], Response::HTTP_BAD_REQUEST);
-        }
-    }
-
+    // Read Perro
     public function listarPerros($request)
     {
         try {
 
             if (isset($request->limit)) {
                 $perro = Perro::with([])
-                    ->orderBy()
+                    ->orderBy('created_at', 'desc')
                     ->take($request->limit)
                     ->get();
-            } else {
+            }elseif (isset($request->id)) {
+                $perro = Perro::find($request->id);
+            }else{
                 $perro = Perro::with([])
-                    ->orderBy()
+                    ->orderBy('created_at', 'desc')
                     ->get();
             }
 
@@ -91,13 +70,48 @@ class PerroRepository
         }
     }
 
+
+    // Update Perro
+    public function actualizarPerro($request)
+    {
+        try {
+            $perro = Perro::find($request->id);
+            if (isset($request->nombre)) {
+                $perro->nombre = $request->nombre;
+            }
+            if (isset($request->url_foto)) {
+                $perro->url_foto = $request->url_foto;
+            }
+            if (isset($request->descripcion)) {
+                $perro->descripcion = $request->descripcion;
+            }
+            $perro->save();
+            return response()->json(["perro" => $perro], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    
+
     public function eliminarPerro($request)
     {
         try {
             $perro = Perro::find($request->id);
             $perro->delete();
-
-            return response()->json(["perro" => $perro], Response::HTTP_OK);
+            return response()->json(["msg" => 'Perro borrado exitosamente'], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
                 "error" => $e->getMessage(),
@@ -141,14 +155,24 @@ class PerroRepository
             ], Response::HTTP_BAD_REQUEST);
         }
     }
+    
+    // chema::create('perros', function (Blueprint $table) {
+    //         $table->uuid('id')->primary();
+    //         $table->string('nombre')->nullable();
+    //         $table->string('url_foto')->nullable();
+    //         $table->text('descripcion')->nullable();
+    //         $table->softDeletes();
+    //         $table->timestamps();
+    //     });
+    // obtener perro random
 
 
-
+    
     public function random($request)
     {
         try {
             Log::info(["request" => $request->user()]);
-            $perro = Perro::with(['id', 'nombre'])->inRandomOrder()->first();
+            $perro = Perro::select('id', 'nombre')->inRandomOrder()->first();
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
@@ -170,9 +194,14 @@ class PerroRepository
     public function perrosCandidatos($request)
     {
         try {
-            Log::info(["request" => $request->user()]);
-            $perro = Perro::with(['id', 'nombre'])->inRandomOrder()->first();
-            return response()->json(["perro" => $perro], Response::HTTP_OK);
+            $idsInteraccion = Interaccion::where('perro_interesado_id', $request->id)
+                                        ->pluck('perro_candidato_id');
+
+            $candidatos = Perro::where('id', '!=', $request->id)
+                            ->whereNotIn('id', $idsInteraccion)
+                            ->get(['id', 'nombre']);
+
+            return response()->json(["candidatos" => $candidatos], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
                 "error" => $e->getMessage(),
@@ -189,4 +218,107 @@ class PerroRepository
             ], Response::HTTP_BAD_REQUEST);
         }
     }
+
+
+    public function interaccion($request)
+    {
+        try {
+            // Verificar si ya existe una interacción entre los mismos perros
+            $interaccionExistente = Interaccion::where('perro_interesado_id', $request->perro_interesado_id)
+                                            ->where('perro_candidato_id', $request->perro_candidato_id)
+                                            ->exists();
+
+            if ($interaccionExistente) {
+                return response()->json(["msg" => "Ya existe una interacción entre estos perros"], Response::HTTP_BAD_REQUEST);
+            }
+
+            if ($request->perro_interesado_id == $request->perro_candidato_id) {
+                return response()->json(["msg" => "No puedes interactuar con el mismo perro"], Response::HTTP_BAD_REQUEST);
+            }
+
+            $interaccion = new Interaccion();
+            $interaccion->perro_interesado_id = $request->perro_interesado_id;
+            $interaccion->perro_candidato_id = $request->perro_candidato_id;
+            $interaccion->preferencia = $request->preferencia;
+            $interaccion->save();
+
+            $match = Interaccion::where('perro_interesado_id', $request->perro_candidato_id)
+                                ->where('perro_candidato_id', $request->perro_interesado_id)
+                                ->where('preferencia', 'aceptado')
+                                ->exists();
+
+            if ($match) {
+                return response()->json(["msg" => "¡Hay match!"], Response::HTTP_OK);
+            } else {
+                return response()->json(["msg" => "Ok"], Response::HTTP_OK);
+            }
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+
+
+    public function aceptados($request)
+    {
+        try {
+            $aceptados = Interaccion::where('perro_interesado_id', $request->id)
+                ->where('preferencia', 'aceptado')
+                ->get(['perro_candidato_id']);
+            $aceptados = Perro::whereIn('id', $aceptados)->get(['id', 'nombre']);
+            return response()->json(["aceptados" => $aceptados], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function rechazados($request)
+    {
+        try {
+            $rechazados = Interaccion::where('perro_interesado_id', $request->id)
+                ->where('preferencia', 'rechazado')
+                ->get(['perro_candidato_id']);
+            $rechazados = Perro::whereIn('id', $rechazados)->get(['id', 'nombre']);
+            return response()->json(["rechazados" => $rechazados], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
 }

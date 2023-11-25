@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{ListarPerroRequest, PerroRequest};
+use App\Http\Requests\{ListarPerroRequest, PerroRequest, InteraccionRequest};
 use App\Repositories\PerroRepository;
 use Illuminate\Http\Request;
 
@@ -26,10 +26,11 @@ class PerroController extends Controller
         return $this->perroRepository->actualizarPerro($request);
     }
 
-    public function listarPerros(Request $request)
+    public function listarPerros(ListarPerroRequest $request)
     {
         return $this->perroRepository->listarPerros($request);
     }
+
 
     public function eliminarPerro(ListarPerroRequest $request)
     {
@@ -49,5 +50,20 @@ class PerroController extends Controller
     public function perrosCandidatos(Request $request)
     {
         return $this->perroRepository->perrosCandidatos($request);
+    }
+
+    public function interaccion(InteraccionRequest $request)
+    {
+        return $this->perroRepository->interaccion($request);
+    }
+
+    public function aceptados(ListarPerroRequest $request)
+    {
+        return $this->perroRepository->aceptados($request);
+    }
+
+    public function rechazados(ListarPerroRequest $request)
+    {
+        return $this->perroRepository->rechazados($request);
     }
 }

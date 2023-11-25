@@ -19,8 +19,9 @@ class InteraccionController extends Controller
 
     public function preferencia(InteraccionRequest $request)
     {
-        return $this->interaccionRepository->preferencia($request)
+        return $this->interaccionRepository->preferencia($request);
     }
+    
     public function preferencias(InteraccionRequest $request)
     {
         return $this->interaccionRepository->preferencias($request);
