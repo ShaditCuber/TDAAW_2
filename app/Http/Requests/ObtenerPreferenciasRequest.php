@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\Response;
 
-class ListarPerroRequest extends FormRequest
+class ObtenerPreferenciasRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,9 +28,7 @@ class ListarPerroRequest extends FormRequest
     {
         return [
             //
-            "id" => "exists:perros,id",
-            "limit"=>"integer",
-            "nombre"=>"string|exists:perros,nombre",
+            "id" => "required|exists:perros,id",
         ];
     }
 
@@ -40,7 +38,6 @@ class ListarPerroRequest extends FormRequest
             'id.required' => 'El ID del perro es obligatorio.',
             'id.integer' => 'El ID del perro debe ser un número entero.',
             'id.exists' => 'El perro seleccionado no existe.',
-            'limit.integer' => 'El limite debe ser un número entero.',
         ];
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{ListarPerroRequest, PerroRequest, InteraccionRequest};
+use App\Http\Requests\{ListarPerroRequest, PerroRequest, InteraccionRequest,CandidatoRequest,ObtenerPreferenciasRequest};
 use App\Repositories\PerroRepository;
 use Illuminate\Http\Request;
 
@@ -16,26 +16,41 @@ class PerroController extends Controller
         $this->perroRepository = $perroRepository;
     }
 
+    // Create Perro
     public function registrarPerro(PerroRequest $request)
     {
         return $this->perroRepository->registrarPerro($request);
     }
 
-    public function actualizarPerro(PerroRequest $request)
-    {
-        return $this->perroRepository->actualizarPerro($request);
-    }
-
+    // Read Perro
     public function listarPerros(ListarPerroRequest $request)
     {
         return $this->perroRepository->listarPerros($request);
     }
 
 
-    public function eliminarPerro(ListarPerroRequest $request)
+    // Update Perro
+    public function actualizarPerro(PerroRequest $request)
+    {
+        return $this->perroRepository->actualizarPerro($request);
+    }
+
+    // Delete Perro
+    public function eliminarPerro(PerroRequest $request)
     {
         return $this->perroRepository->eliminarPerro($request);
     }
+
+    // Restaurar Perro
+    public function restaurarPerro(PerroRequest $request)
+    {
+        return $this->perroRepository->restaurarPerro($request);
+    }
+
+
+
+
+
 
     public function cargarPerro()
     {
@@ -47,7 +62,7 @@ class PerroController extends Controller
         return $this->perroRepository->random($request);
     }
 
-    public function perrosCandidatos(Request $request)
+    public function perrosCandidatos(CandidatoRequest $request)
     {
         return $this->perroRepository->perrosCandidatos($request);
     }
@@ -57,12 +72,12 @@ class PerroController extends Controller
         return $this->perroRepository->interaccion($request);
     }
 
-    public function aceptados(ListarPerroRequest $request)
+    public function aceptados(ObtenerPreferenciasRequest $request)
     {
         return $this->perroRepository->aceptados($request);
     }
 
-    public function rechazados(ListarPerroRequest $request)
+    public function rechazados(ObtenerPreferenciasRequest $request)
     {
         return $this->perroRepository->rechazados($request);
     }

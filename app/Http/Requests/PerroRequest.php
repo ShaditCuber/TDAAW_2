@@ -28,8 +28,10 @@ class PerroRequest extends FormRequest
     {
         return [
             //
-            "id" => "required|exists:perros,id",
+            "id" => "exists:perros,id",
             "nombre" => "unique:perros|string",
+            "url_foto"=>"unique:perros|string",
+            "descripcion"=>"string",
         ];
     }
 

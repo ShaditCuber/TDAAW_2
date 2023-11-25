@@ -46,6 +46,8 @@ class PerroRepository
                     ->get();
             }elseif (isset($request->id)) {
                 $perro = Perro::find($request->id);
+            }elseif (isset($request->nombre)) {
+                $perro = Perro::where('nombre', 'like', '%'.$request->nombre.'%')->get();
             }else{
                 $perro = Perro::with([])
                     ->orderBy('created_at', 'desc')
@@ -73,7 +75,10 @@ class PerroRepository
 
     // Update Perro
     public function actualizarPerro($request)
-    {
+    {   
+        if (!isset($request->id)) {
+            return response()->json(["msg" => "No proporciono id de perro"], Response::HTTP_BAD_REQUEST);
+        }
         try {
             $perro = Perro::find($request->id);
             if (isset($request->nombre)) {
@@ -107,9 +112,15 @@ class PerroRepository
     
 
     public function eliminarPerro($request)
-    {
+    {   
+        if (!isset($request->id)) {
+            return response()->json(["msg" => "No proporciono id de perro"], Response::HTTP_BAD_REQUEST);
+        }
         try {
             $perro = Perro::find($request->id);
+            if (!$perro) {
+                return response()->json(["msg" => "No existe perro con ese id"], Response::HTTP_BAD_REQUEST);
+            }
             $perro->delete();
             return response()->json(["msg" => 'Perro borrado exitosamente'], Response::HTTP_OK);
         } catch (Exception $e) {
@@ -223,7 +234,6 @@ class PerroRepository
     public function interaccion($request)
     {
         try {
-            // Verificar si ya existe una interacción entre los mismos perros
             $interaccionExistente = Interaccion::where('perro_interesado_id', $request->perro_interesado_id)
                                             ->where('perro_candidato_id', $request->perro_candidato_id)
                                             ->exists();
@@ -321,4 +331,33 @@ class PerroRepository
         }
     }
 
+    public function restaurarPerro($request){
+        
+        if (!isset($request->id)) {
+            return response()->json(["msg" => "No proporciono id de perro"], Response::HTTP_BAD_REQUEST);
+        }
+
+        try {
+            $perro = Perro::withTrashed()->find($request->id);
+            if (!$perro) {
+                return response()->json(["msg" => "No existe perro con ese id"], Response::HTTP_BAD_REQUEST);
+            }
+            $perro->restore();
+            return response()->json(["msg" => 'Perro restaurado exitosamente'], Response::HTTP_OK);
+        } catch (Exception $e) {
+            Log::info([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ]);
+
+            return response()->json([
+                "error" => $e->getMessage(),
+                "linea" => $e->getLine(),
+                "file" => $e->getFile(),
+                "metodo" => __METHOD__
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
 }
