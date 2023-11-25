@@ -210,7 +210,7 @@ class PerroRepository
 
             $candidato = Perro::where('id', '!=', $request->id)
                             ->whereNotIn('id', $idsInteraccion)
-                            ->first(['id', 'nombre']);
+                            ->first(['url_foto', 'nombre','descripcion']);
 
             if ($candidato) {
                 return response()->json(["candidato" => $candidato], Response::HTTP_OK);
