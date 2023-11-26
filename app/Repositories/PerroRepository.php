@@ -148,7 +148,7 @@ class PerroRepository
     {
         try {
             Log::info(["request" => $request->user()]);
-            $perro = Perro::with(['id', 'nombre'])->inRandomOrder()->first();
+            $perro = Perro::select('id', 'nombre', 'url_foto')->inRandomOrder()->first();
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
