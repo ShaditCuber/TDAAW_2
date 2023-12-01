@@ -81,4 +81,16 @@ class PerroController extends Controller
     {
         return $this->perroRepository->rechazados($request);
     }
+
+
+    public function login(Request $request)
+    {
+        return $this->perroRepository->login($request);
+    }
+
+    public function registro(Request $request)
+    {
+        return $this->perroRepository->registro($request);
+    }
+    
 }

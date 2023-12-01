@@ -19,6 +19,12 @@ class Perro extends Model
     {
         return $this->hasMany(Interaccion::class, 'perro_interesado_id');
     }
+
+    public function usuario()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected static function boot()
     {
         parent::boot();

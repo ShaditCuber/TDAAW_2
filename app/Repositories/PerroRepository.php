@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
+
 class PerroRepository
 {   
 
@@ -365,4 +366,5 @@ class PerroRepository
             ], Response::HTTP_BAD_REQUEST);
         }
     }
+
 }

@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
@@ -24,32 +25,44 @@ class AuthController extends Controller
         ], 201);
     }
     
-    public function login(LoginRequest $request)
+    // public function login(LoginRequest $request)
+    // {
+    //     $credentials = request(['email', 'password']);
+
+    //     if (!Auth::attempt($credentials))
+    //         return response()->json([
+    //             'message' => 'Unauthorized'
+    //         ], 401);
+
+    //     $user = $request->user();
+    //     $tokenResult = $user->createToken('Personal Access Token');
+
+    //     // $token = $tokenResult->token;
+    //     // if ($request->remember_me)
+    //     //     $token->expires_at = Carbon::now()->addWeeks(1);
+    //     // else{
+    //     //     $token->expires_at = Carbon::now()->addDays(2);
+
+    //     // }
+    //     // $token->save();
+
+    //     return response()->json([
+    //         'access_token' => $tokenResult->plainTextToken,
+    //         'token_type' => 'Bearer',
+    //         //'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
+    //     ]);
+    // }
+   public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
-
-        if (!Auth::attempt($credentials))
-            return response()->json([
-                'message' => 'Unauthorized'
-            ], 401);
-
-        $user = $request->user();
-        $tokenResult = $user->createToken('Personal Access Token');
-
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        else{
-            $token->expires_at = Carbon::now()->addDays(2);
-
+        $credentials = $request->only('email', 'password');
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        $token->save();
-
-        return response()->json([
-            'access_token' => $tokenResult->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString()
-        ]);
+        return response()->json(compact('token'));
     }
   
     /**
