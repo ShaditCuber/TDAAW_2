@@ -208,10 +208,11 @@ class PerroRepository
         try {
             $idsInteraccion = Interaccion::where('perro_interesado_id', $request->id)
                                         ->pluck('perro_candidato_id');
-
+            
             $candidato = Perro::where('id', '!=', $request->id)
                             ->whereNotIn('id', $idsInteraccion)
-                            ->first(['url_foto', 'nombre','descripcion']);
+                            ->inRandomOrder()
+                            ->first(['url_foto', 'nombre','descripcion','id']);
 
             if ($candidato) {
                 return response()->json(["candidato" => $candidato], Response::HTTP_OK);
@@ -293,7 +294,9 @@ class PerroRepository
             $aceptados = Interaccion::where('perro_interesado_id', $request->id)
                 ->where('preferencia', 'aceptado')
                 ->get(['perro_candidato_id']);
-            $aceptados = Perro::whereIn('id', $aceptados)->get(['id', 'nombre']);
+            $aceptados = Perro::whereIn('id', $aceptados)->get(['id', 'nombre','url_foto','descripcion'])->sortByDesc('created_at');
+            // devolver en orden de fecha de interaccion
+            
             return response()->json(["aceptados" => $aceptados], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
@@ -318,7 +321,7 @@ class PerroRepository
             $rechazados = Interaccion::where('perro_interesado_id', $request->id)
                 ->where('preferencia', 'rechazado')
                 ->get(['perro_candidato_id']);
-            $rechazados = Perro::whereIn('id', $rechazados)->get(['id', 'nombre']);
+            $rechazados = Perro::whereIn('id', $rechazados)->get(['id', 'nombre','url_foto','descripcion'])->sortByDesc('created_at');
             return response()->json(["rechazados" => $rechazados], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([

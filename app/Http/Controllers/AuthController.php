@@ -81,7 +81,21 @@ class AuthController extends Controller
      * Obtener el objeto User como json
      */
     public function user(Request $request)
-    {
-        return response()->json($request->user());
+    {   
+        $user = $request->user()->only(['name', 'email', 'perro_id']);
+
+        return response()->json($user);
     }
+
+    public function actualizarUsuario(Request $request)
+    {
+        $user = $request->user();
+        // $user->name = $request->name;
+        $user->perro_id = $request->perro_id;
+        $user->save();
+        return response()->json([
+            'message' => 'Usuario actualizado!'
+        ], 201);
+    }
+
 }
