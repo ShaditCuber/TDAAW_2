@@ -21,19 +21,19 @@ class PerroFactory extends Factory
 
     public function definition()
     {
-        //$perroService = app(PerroService::class);
-        //$imageData = $perroService->singleRandomImageFromAllDogsCollection();
-        // $imageData = $this->perroService->singleRandomImageFromAllDogsCollection();
-        //$imageUrl = $imageData['message']; //url
-        //$imageUrl = isset($imageData['body']) ? $imageData['body'] : null;
         $perroService = new PerroService();
-        $data = $perroService->singleRandomImageFromAllDogsCollection();
-        $imageUrl = $data['body']['message'];
+        $imageUrl = null;
+
+        do {
+            $data = $perroService->singleRandomImageFromAllDogsCollection();
+            $imageUrl = $data['body']['message'];
+        } while (Perro::where('url_foto', $imageUrl)->exists());
+
         return [
             'nombre' => ucfirst(fake()->unique()->regexify('[A-Za-z]{6}')),
             'url_foto' => $imageUrl,
             'descripcion' => ucfirst(fake()->sentence()),
-
         ];
-    }
+}
+
 }
