@@ -13,6 +13,9 @@ class Interaccion extends Model
     use HasFactory;
 
     protected $table = 'interacciones';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public function perroInteresado()
     {
@@ -30,7 +33,7 @@ class Interaccion extends Model
 
         // Asigna un UUID al campo 'id' antes de crear un nuevo modelo
         static::creating(function ($model) {
-            $model->uuid = Str::uuid();
+            $model->id = Str::uuid();
         });
     }
 
