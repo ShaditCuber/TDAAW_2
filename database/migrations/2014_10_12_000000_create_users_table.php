@@ -21,11 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table
-                ->foreignId('perro_id')
-                ->nullable()
-                ->constrained('perros')
-                ->onDelete('cascade');
+            
         });
     }
 
