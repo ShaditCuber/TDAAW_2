@@ -27,13 +27,17 @@ class PerroFactory extends Factory
         do {
             $data = $perroService->singleRandomImageFromAllDogsCollection();
             $imageUrl = $data['body']['message'];
-        } while (Perro::where('url_foto', $imageUrl)->exists());
+        } while ($this->exist_url($imageUrl));
 
         return [
             'nombre' => ucfirst(fake()->unique()->regexify('[A-Za-z]{6}')),
             'url_foto' => $imageUrl,
             'descripcion' => ucfirst(fake()->sentence()),
         ];
-}
+    }
+
+    public function exist_url($url){
+        return Perro::where('url_foto', $url)->exists();
+    }
 
 }

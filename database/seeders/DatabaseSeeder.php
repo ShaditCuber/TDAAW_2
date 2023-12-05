@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
 
         try {
             // Perro::factory()->count(1)->create();
-            Perro::factory(200)->create();
+            Perro::factory(5)->create();
         } catch (\Exception $e) {
             // Manejar el error
             dd($e->getMessage());
