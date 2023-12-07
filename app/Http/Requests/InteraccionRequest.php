@@ -27,7 +27,6 @@ class InteraccionRequest extends FormRequest
     public function rules()
     {
         return [
-            "perro_interesado_id" => "required|exists:perros,id",
             "perro_candidato_id" => "required|exists:perros,id",
             "preferencia" => "required|in:aceptado,rechazado",
         ];
@@ -36,9 +35,6 @@ class InteraccionRequest extends FormRequest
     public function messages()
     {
         return [
-            'perro_interesado_id.required' => 'El ID del perro interesado es obligatorio.',
-            'perro_interesado_id.integer' => 'El ID del perro interesado debe ser un número entero.',
-            'perro_interesado_id.exists' => 'El perro interesado seleccionado no existe.',
             'perro_candidato_id.required' => 'El ID del perro candidato es obligatorio.',
             'perro_candidato_id.integer' => 'El ID del perro candidato debe ser un número entero.',
             'perro_candidato_id.exists' => 'El perro candidato seleccionado no existe.',

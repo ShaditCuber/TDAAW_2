@@ -184,7 +184,10 @@ class PerroRepository
     {
         try {
             Log::info(["request" => $request->user()]);
-            $perro = Perro::select('id', 'nombre')->inRandomOrder()->first();
+            $perrosConUser = User::pluck('perro_id');
+            $perro = Perro::whereNotIn('id', $perrosConUser)
+                            ->inRandomOrder()
+                            ->first(['url_foto', 'nombre','descripcion','id']);
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
@@ -204,20 +207,26 @@ class PerroRepository
     }
 
     public function perrosCandidatos($request)
-    {
+    {   
+        $user = $request->user();
+        $id_perro = $user->perro_id;
         try {
-            $idsInteraccion = Interaccion::where('perro_interesado_id', $request->id)
+            $idsInteraccion = Interaccion::where('perro_interesado_id', $id_perro)
                                         ->pluck('perro_candidato_id');
             
-            $candidato = Perro::where('id', '!=', $request->id)
+            $candidato = Perro::where('id', '!=', $id_perro)
                             ->whereNotIn('id', $idsInteraccion)
                             ->inRandomOrder()
                             ->first(['url_foto', 'nombre','descripcion','id']);
 
+            Log::info("Perro del usuario: $id_perro");
+            Log::info("IDs excluidos: ", $idsInteraccion->toArray());
+            Log::info("Perro candidato: $candidato");
+
             if ($candidato) {
                 return response()->json(["candidato" => $candidato], Response::HTTP_OK);
             } else {
-                return response()->json(["mensaje" => "No hay más candidatos disponibles"], Response::HTTP_OK);
+                return response()->json(["mensaje" => "No hay mas candidatos disponibles"], Response::HTTP_OK);
             }
 
         } catch (Exception $e) {
@@ -239,9 +248,11 @@ class PerroRepository
 
 
     public function interaccion($request)
-    {
+    {   
+        $user = $request->user();
+        $id_perro = $user->perro_id;
         try {
-            $interaccionExistente = Interaccion::where('perro_interesado_id', $request->perro_interesado_id)
+            $interaccionExistente = Interaccion::where('perro_interesado_id', $id_perro)
                                             ->where('perro_candidato_id', $request->perro_candidato_id)
                                             ->exists();
 
@@ -254,15 +265,16 @@ class PerroRepository
             }
 
             $interaccion = new Interaccion();
-            $interaccion->perro_interesado_id = $request->perro_interesado_id;
+            $interaccion->perro_interesado_id = $id_perro;
             $interaccion->perro_candidato_id = $request->perro_candidato_id;
             $interaccion->preferencia = $request->preferencia;
             $interaccion->save();
 
             $match = Interaccion::where('perro_interesado_id', $request->perro_candidato_id)
-                                ->where('perro_candidato_id', $request->perro_interesado_id)
+                                ->where('perro_candidato_id', $id_perro)
                                 ->where('preferencia', 'aceptado')
                                 ->exists();
+
 
             if ($match) {
                 return response()->json(["msg" => "¡Hay match!"], Response::HTTP_OK);

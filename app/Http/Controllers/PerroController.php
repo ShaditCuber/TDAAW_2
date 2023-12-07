@@ -62,7 +62,7 @@ class PerroController extends Controller
         return $this->perroRepository->random($request);
     }
 
-    public function perrosCandidatos(CandidatoRequest $request)
+    public function perrosCandidatos(Request $request)
     {
         return $this->perroRepository->perrosCandidatos($request);
     }
