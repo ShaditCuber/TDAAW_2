@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Jobs\CargaPerrosJob;
 use App\Models\Perro;
 use App\Models\Interaccion;
+use App\Models\User;
 use App\Services\PerroService;
 use Exception;
 use Illuminate\Http\Response;
@@ -184,10 +185,12 @@ class PerroRepository
     {
         try {
             Log::info(["request" => $request->user()]);
-            $perrosConUser = User::pluck('perro_id');
+            $perrosConUser = User::whereNotNull('perro_id')->pluck('perro_id');
+            Log::info(["perrosConUser" => $perrosConUser]);
             $perro = Perro::whereNotIn('id', $perrosConUser)
                             ->inRandomOrder()
                             ->first(['url_foto', 'nombre','descripcion','id']);
+            
             return response()->json(["perro" => $perro], Response::HTTP_OK);
         } catch (Exception $e) {
             Log::info([
