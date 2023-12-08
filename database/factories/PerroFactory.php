@@ -27,7 +27,7 @@ class PerroFactory extends Factory
         do {
             $data = $perroService->singleRandomImageFromAllDogsCollection();
             $imageUrl = $data['body']['message'];
-        } while ($this->exist_url($imageUrl));
+        } while ($this->exist_url($imageUrl) || !$this->isValidImage($imageUrl));
 
         return [
             'nombre' => ucfirst(fake()->unique()->regexify('[A-Za-z]{6}')),
@@ -38,6 +38,16 @@ class PerroFactory extends Factory
 
     public function exist_url($url){
         return Perro::where('url_foto', $url)->exists();
+    }
+
+    public function isValidImage($url){
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return $code == 200;
     }
 
 }

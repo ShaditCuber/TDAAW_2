@@ -18,7 +18,7 @@ COPY composer.json .
 RUN composer install --no-scripts
 COPY . .
 
-CMD php artisan serve --host=0.0.0.0 --port=80
-# CMD php artisan db:seed && php artisan serve --host=
+# CMD php artisan serve --host=0.0.0.0 --port=80
+CMD  php artisan migrate:fresh && php artisan db:seed && php artisan serve --host=
 
 
