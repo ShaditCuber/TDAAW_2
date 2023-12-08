@@ -40,13 +40,6 @@
 							"path": [
 								"tinder",
 								"candidatos"
-							],
-							"query": [
-								{
-									"key": "perro_interesado_id",
-									"value": "d9634525-f4d7-403f-b3f4-86056824296e",
-									"disabled": true
-								}
 							]
 						}
 					},
@@ -107,7 +100,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/tinder/interaccion?perro_interesado_id=020efd00-abbc-441e-8cbe-d9458e3a77c3&perro_candidato_id=d9634525-f4d7-403f-b3f4-86056824296e&preferencia=aceptado",
+							"raw": "{{BASE_URL}}/tinder/interaccion?perro_candidato_id=9b43f5ae-300e-4968-8099-9e607f9d2a68&preferencia=rechazado",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -117,16 +110,12 @@
 							],
 							"query": [
 								{
-									"key": "perro_interesado_id",
-									"value": "020efd00-abbc-441e-8cbe-d9458e3a77c3"
-								},
-								{
 									"key": "perro_candidato_id",
-									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+									"value": "9b43f5ae-300e-4968-8099-9e607f9d2a68"
 								},
 								{
 									"key": "preferencia",
-									"value": "aceptado"
+									"value": "rechazado"
 								}
 							]
 						}
@@ -139,7 +128,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/tinder/aceptados?id=d9634525-f4d7-403f-b3f4-86056824296e",
+							"raw": "{{BASE_URL}}/tinder/aceptados?id=4ecd218c-3651-4a22-b7bc-10e784968d39",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -150,7 +139,7 @@
 							"query": [
 								{
 									"key": "id",
-									"value": "d9634525-f4d7-403f-b3f4-86056824296e"
+									"value": "4ecd218c-3651-4a22-b7bc-10e784968d39"
 								}
 							]
 						}
@@ -181,6 +170,26 @@
 					},
 					"response": []
 				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
@@ -192,7 +201,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/perro/registrar?nombre=prueba&url_foto=https://hips.hearstapps.com/hmg-prod/images/gettyimages-1422023439-64f1eaf518ace.jpg?crop=1xw:0.84375xh;center,top%26resize=1200:*&descripcion=prueba&=",
+							"raw": "{{BASE_URL}}/perro/registrar?nombre=prueba&descripcion=prueba",
 							"host": [
 								"{{BASE_URL}}"
 							],
@@ -207,7 +216,8 @@
 								},
 								{
 									"key": "url_foto",
-									"value": "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1422023439-64f1eaf518ace.jpg?crop=1xw:0.84375xh;center,top%26resize=1200:*"
+									"value": "https://hips.hearstapps.com/hmg-prod/images/gettyimages-1422023439-64f1eaf518ace.jpg?crop=1xw:0.84375xh;center,top%26resize=1200:*",
+									"disabled": true
 								},
 								{
 									"key": "descripcion",
@@ -215,7 +225,8 @@
 								},
 								{
 									"key": "",
-									"value": ""
+									"value": "",
+									"disabled": true
 								}
 							]
 						}
@@ -334,8 +345,130 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/login?email=1@gmail.com&password=123",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "1@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/auth/registro/?email=1@gmail.com&password=123&name=poto",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"auth",
+								"registro",
+								""
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "1@gmail.com"
+								},
+								{
+									"key": "password",
+									"value": "123"
+								},
+								{
+									"key": "name",
+									"value": "poto"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/user",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/user/actualizar?perro_id=b87b8623-f71a-4850-91f9-e48793b13617",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"user",
+								"actualizar"
+							],
+							"query": [
+								{
+									"key": "perro_id",
+									"value": "b87b8623-f71a-4850-91f9-e48793b13617"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwODAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE3MDE5MjI0NzMsImV4cCI6MTcwMTkyNjA3MywibmJmIjoxNzAxOTIyNDczLCJqdGkiOiJpQ2NQWGVOSTR5elFZRVdnIiwic3ViIjoiMTEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.dIKdgkuqlItc_TrzOI7-mXYYSYytpC_x-_M9XNGEVHc",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",
@@ -359,7 +492,7 @@
 	"variable": [
 		{
 			"key": "BASE_URL",
-			"value": "localhost:8000/api"
+			"value": "http://127.0.0.1:8080/api"
 		}
 	]
 }
